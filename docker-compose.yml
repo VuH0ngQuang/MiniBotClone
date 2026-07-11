@@ -1,0 +1,13 @@
+services:
+  optibot:
+    build: .
+    environment:
+      - API_KEY=${API_KEY}
+      - FILE_SEARCH_STORE_NAME=${FILE_SEARCH_STORE_NAME}
+      - RUN_ONCE=${RUN_ONCE:-false}
+      - RUN_HOUR=${RUN_HOUR:-00}
+      - RUN_MINUTE=${RUN_MINUTE:-00}
+      - TZ=Asia/Ho_Chi_Minh
+    volumes:
+      - ./articles_md:/app/articles_md
+      - ./job.log:/app/job.log

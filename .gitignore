@@ -1,0 +1,11 @@
+.claude
+.gitnexus
+.idea
+.env
+.vscode
+articles_md
+__pycache__
+.pytest_cache
+
+AGENTS.md
+CLAUDE.md

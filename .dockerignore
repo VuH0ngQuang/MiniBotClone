@@ -1,0 +1,13 @@
+.git
+.gitnexus
+.idea
+.vscode
+.claude
+opticbot.venv
+articles_md
+job.log
+.env
+.pytest_cache
+README.md
+AGENTS.md
+CLAUDE.md

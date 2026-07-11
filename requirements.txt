@@ -1,0 +1,7 @@
+requests
+beautifulsoup4
+lxml
+markdownify
+python-slugify
+python-dotenv
+google-genai
