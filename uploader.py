@@ -95,7 +95,7 @@ def deleteOldDocumentIfExists(threadClient: genai.Client, articleId: str) -> Non
     oldDocName = docMap.get(articleId)
     if oldDocName:
         try:
-            threadClient.file_search_stores.documents.delete(name=oldDocName)
+            threadClient.file_search_stores.documents.delete(name=oldDocName, config={"force": True})
             logger.info(f"deleted old document for id {articleId}: {oldDocName}")
         except Exception as e:
             logger.warning(f"could not delete old document for id {articleId}: {e}")
