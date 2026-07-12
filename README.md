@@ -23,12 +23,17 @@
   docker run -e API_KEY=<your Gemini API key> optibot
   ```
 - **Recurring scheduler** (scrape+upload daily at `RUN_HOUR:RUN_MINUTE`, no sanity check, runs forever) via `docker-compose.yml`,
-  which sets `RUN_ONCE=false` and mounts `articles_md` so scraped content persists:
+  which sets `RUN_ONCE=false` and persists scraped articles / `.env` (including the auto-created
+  `FILE_SEARCH_STORE_NAME`) in a named volume across restarts:
   ```
-  API_KEY=<your Gemini API key> docker compose up
+  touch job.log   # first run only — see note below
+  GEMINI_API_KEY=<your Gemini API key> docker compose up
   ```
-  Override the schedule by editing `RUN_HOUR`/`RUN_MINUTE` in `docker-compose.yml`, or pass
+  Override the schedule by editing `RUN_HOUR`/`RUN_MINUTE` in `.env` or `docker-compose.yml`, or pass
   `-e RUN_HOUR=9 -e RUN_MINUTE=0 -e RUN_ONCE=false` to `docker run`.
+
+  `job.log` is bind-mounted from the project root, so it must exist as a file on the host before the
+  first `docker compose up` — otherwise Docker will create it as a directory instead.
 
   The image sets `TZ=Asia/Ho_Chi_Minh` (UTC+7), so `RUN_HOUR=17` means 5 PM Vietnam time, not UTC.
   Override with `-e TZ=<your zone>` if you're scheduling from elsewhere.
@@ -51,10 +56,10 @@ All entry points (`scraper.py`, `uploader.py`, `job.py`, `main.py`) append times
 [`job.log`](job.log) in the project root (also mirrored to stdout). Each run logs added/updated/skipped
 counts, per-file upload results, and a final upload summary with the store's document counts.
 
+Live daily job logs (running on VPS): https://vuhongquang.com/job.log
+
 ## Sample question & answer
 
 Prompt: **"How do I add a YouTube video?"**
 
 ![OptiBot answering a sample question with citations](docs/assistant-answer.png)
-
-*(screenshot placeholder — drop the actual capture at `docs/assistant-answer.png`)*

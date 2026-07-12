@@ -3,6 +3,7 @@
 .idea
 .env
 .vscode
+job.log
 articles_md
 __pycache__
 .pytest_cache

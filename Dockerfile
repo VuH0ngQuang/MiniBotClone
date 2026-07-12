@@ -11,6 +11,11 @@ RUN pip install --no-cache-dir -r requirements.txt
 
 COPY main.py job.py scraper.py uploader.py ./
 
+RUN mkdir -p /app/data/articles_md \
+    && touch /app/data/.env \
+    && ln -s /app/data/.env /app/.env \
+    && ln -s /app/data/articles_md /app/articles_md
+
 ENV RUN_ONCE=true
 
 CMD ["python3", "main.py"]
