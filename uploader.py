@@ -95,7 +95,11 @@ def deleteOldDocumentIfExists(threadClient: genai.Client, articleId: str) -> Non
     oldDocName = docMap.get(articleId)
     if oldDocName:
         try:
-            threadClient.file_search_stores.documents.delete(name=oldDocName, config={"force": True})
+            # google-genai's config={"force": True} is broken: urlencode() serializes the
+            # bool as "force=True" (capital T), which the API doesn't parse as truthy, so
+            # non-empty documents fail to delete. Bake the lowercase query param into the
+            # name instead, bypassing the SDK's config serialization entirely.
+            threadClient.file_search_stores.documents.delete(name=f"{oldDocName}?force=true")
             logger.info(f"deleted old document for id {articleId}: {oldDocName}")
         except Exception as e:
             logger.warning(f"could not delete old document for id {articleId}: {e}")
